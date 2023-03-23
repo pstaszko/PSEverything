@@ -1,58 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
-
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>PSEverything</PackageId>
+    <Version>3.1.0</Version>
+    <Authors>Powercode</Authors>
+    <Product>PSEverything</Product>
+    <Description>Blazingly fast file searches with voidtools Everything</Description>
+    <PackageLicenseUrl>https://raw.githubusercontent.com/powercode/PSEverything/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/powercode/PSEverything</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/powercode/PSEverything</RepositoryUrl>
+    <RepositoryType>git</RepositoryType>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <LangVersion>latest</LangVersion>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="PowerShellStandard.Library" Version="5.1.0-preview-01" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="..\LICENSE">
+      <Link>LICENSE</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="PSEverything.psd1;PSEverything.dll-Help.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="dll\Everything*.dll">
+      <Link>%(Filename)%(Extension)</Link>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <Target Name="AfterBuild">
+    <ItemGroup>
+      <ModuleFiles Include="$(TargetPath)" />
+      <ModuleFiles Include="@(Content)" />
+    </ItemGroup>
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <PackageId>PSEverything</PackageId>
-        <Version>3.1.0</Version>
-        <Authors>Powercode</Authors>
-        <Product>PSEverything</Product>
-        <Description>Blazingly fast file searches with voidtools Everything</Description>
-        <PackageLicenseUrl>https://raw.githubusercontent.com/powercode/PSEverything/master/LICENSE</PackageLicenseUrl>
-        <PackageProjectUrl>https://github.com/powercode/PSEverything</PackageProjectUrl>
-        <RepositoryUrl>https://github.com/powercode/PSEverything</RepositoryUrl>
-        <RepositoryType>git</RepositoryType>
+      <ModuleDir>$(TargetDir)\PSEverything</ModuleDir>
     </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
-      <LangVersion>latest</LangVersion>
-    </PropertyGroup>
-
-    <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-      <LangVersion>latest</LangVersion>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <PackageReference Include="PowerShellStandard.Library" Version="5.1.0-preview-01" />
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Include="..\LICENSE">
-            <Link>LICENSE</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-        <Content Include="PSEverything.psd1;PSEverything.dll-Help.xml">
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
-        <Content Include="dll\Everything*.dll">
-            <Link>%(Filename)%(Extension)</Link>
-            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-        </Content>
-    </ItemGroup>
-    <ItemGroup>
-      <Folder Include="Properties\" />
-    </ItemGroup>
-
-    <Target Name="AfterBuild">
-        <ItemGroup>
-            <ModuleFiles Include="$(TargetPath)" />
-            <ModuleFiles Include="@(Content)" />
-        </ItemGroup>
-        <PropertyGroup>
-            <ModuleDir>$(TargetDir)\PSEverything</ModuleDir>
-        </PropertyGroup>
-        <MakeDir Directories="$(ModuleDir)" />
-        <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(ModuleDir)" SkipUnchangedFiles="true" />
-    </Target>
+    <MakeDir Directories="$(ModuleDir)" />
+    <Copy SourceFiles="@(ModuleFiles)" DestinationFolder="$(ModuleDir)" SkipUnchangedFiles="true" />
+  </Target>
 </Project>
